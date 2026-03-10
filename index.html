@@ -374,6 +374,110 @@
   .stat-change.up { color: var(--green); }
   .stat-change.down { color: var(--red); }
 
+  /* Latest Addition */
+  .latest-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 16px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .latest-card:hover { border-color: var(--border2); }
+
+  .latest-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0.4;
+  }
+
+  .latest-img-wrap {
+    width: 72px;
+    height: 72px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    flex-shrink: 0;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .latest-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .latest-img-wrap svg { width: 24px; height: 24px; color: var(--text3); opacity: 0.4; }
+
+  .latest-body { flex: 1; min-width: 0; }
+
+  .latest-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+
+  .latest-brand {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--text3);
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  .latest-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .latest-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    margin-top: 4px;
+    letter-spacing: 0.05em;
+  }
+
+  .latest-view-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    background: var(--gold-dim);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: var(--radius);
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+
+  .latest-view-btn:hover { background: rgba(201,168,76,0.2); }
+
   /* Fun Facts */
   .funfact-wrap {
     margin-bottom: 24px;
@@ -1441,6 +1545,23 @@
           </div>
         </div>
 
+        <!-- Latest Addition -->
+        <div id="latest-wrap" style="display:none;margin-bottom:16px">
+          <div class="latest-card">
+            <div class="latest-img-wrap" id="latest-img-wrap"></div>
+            <div class="latest-body">
+              <div class="latest-label">Latest Addition</div>
+              <div class="latest-brand" id="latest-brand"></div>
+              <div class="latest-name" id="latest-name"></div>
+              <div class="latest-meta" id="latest-meta"></div>
+            </div>
+            <button class="latest-view-btn" id="latest-view-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              View
+            </button>
+          </div>
+        </div>
+
         <!-- Fun Facts Slider -->
         <div class="funfact-wrap">
           <div class="funfact-card" id="funfact-card">
@@ -2242,6 +2363,7 @@ function updateStats() {
   document.getElementById('stat-avg').textContent = fmt(Math.round(avg));
   document.getElementById('stat-top').textContent = top ? top.brand+' '+top.name : '—';
   document.getElementById('sidebar-total').textContent = fmt(totalVal);
+  renderLatestAddition();
 }
 
 function updateCounts() {
@@ -2275,7 +2397,34 @@ document.addEventListener('keydown', e => {
   }
 });
 
-// ===== FUN FACTS =====
+function renderLatestAddition() {
+  const wrap = document.getElementById('latest-wrap');
+  if (!wrap) return;
+  if (!watches.length) { wrap.style.display = 'none'; return; }
+
+  // Find most recently added watch
+  const latest = watches.reduce((a, b) => ((a.addedAt || 0) > (b.addedAt || 0) ? a : b));
+  wrap.style.display = 'block';
+
+  // Image
+  const imgWrap = document.getElementById('latest-img-wrap');
+  imgWrap.innerHTML = latest.images && latest.images.length
+    ? `<img src="${latest.images[0]}" alt="${latest.name}">`
+    : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>`;
+
+  document.getElementById('latest-brand').textContent = latest.brand;
+  document.getElementById('latest-name').textContent = latest.name;
+
+  const parts = [];
+  if (latest.ref) parts.push('Ref. ' + latest.ref);
+  if (latest.year) parts.push(latest.year);
+  if (latest.value) parts.push(fmt(latest.value));
+  document.getElementById('latest-meta').textContent = parts.join(' · ') || '—';
+
+  document.getElementById('latest-view-btn').onclick = () => openDetail(latest.id);
+}
+
+
 const funFacts = [
   "The first wristwatch was made by Patek Philippe in 1868 as a bracelet watch for Countess Koscowicz of Hungary.",
   "A mechanical watch movement can contain over 130 individual components, all fitting inside a case smaller than a coin.",
