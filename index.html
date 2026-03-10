@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Horology — Watch Collection</title>
+<title>Watch Vault — Your Collection, Catalogued</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -86,29 +86,11 @@
   }
 
   .sidebar-logo {
-    padding: 28px 24px 24px;
+    padding: 20px 18px 18px;
     border-bottom: 1px solid var(--border);
-  }
-
-  .logo-mark {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
-    font-weight: 300;
-    letter-spacing: 0.2em;
-    color: var(--gold);
-    display: block;
-    line-height: 1;
-    text-transform: uppercase;
-  }
-
-  .logo-sub {
-    font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    letter-spacing: 0.3em;
-    color: var(--text3);
-    text-transform: uppercase;
-    margin-top: 7px;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
   }
 
   .sidebar-nav {
@@ -1414,13 +1396,39 @@
     text-align:center;
     box-shadow:0 32px 80px rgba(0,0,0,0.6);
   ">
-    <!-- Top gold line -->
     <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);border-radius:8px 8px 0 0"></div>
 
-    <div style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;margin-bottom:4px">Horology</div>
-    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.35em;color:var(--text3);text-transform:uppercase;margin-bottom:36px">Watch Collection</div>
-
-    <div style="width:56px;height:1px;background:linear-gradient(90deg,transparent,var(--border2),transparent);margin:0 auto 36px"></div>
+    <div style="margin-bottom:32px;display:flex;justify-content:center">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" style="width:260px;height:auto">
+        <defs>
+          <linearGradient id="goldGradL" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#C9A84C"/>
+            <stop offset="50%" style="stop-color:#E8C96A"/>
+            <stop offset="100%" style="stop-color:#A8832A"/>
+          </linearGradient>
+          <filter id="glowL"><feGaussianBlur stdDeviation="1.2" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <rect x="19" y="4" width="12" height="11" rx="2" fill="#1e1a10" stroke="#9a7830" stroke-width="0.8"/>
+        <rect x="19" y="65" width="12" height="11" rx="2" fill="#1e1a10" stroke="#9a7830" stroke-width="0.8"/>
+        <circle cx="25" cy="40" r="26" fill="none" stroke="url(#goldGradL)" stroke-width="1.8" filter="url(#glowL)"/>
+        <circle cx="25" cy="40" r="22" fill="none" stroke="#9a7830" stroke-width="0.5" stroke-opacity="0.5"/>
+        <rect x="50" y="37" width="5" height="6" rx="1.5" fill="url(#goldGradL)"/>
+        <circle cx="25" cy="40" r="21" fill="#12100a"/>
+        <g stroke="url(#goldGradL)" stroke-width="1.2" filter="url(#glowL)"><line x1="25" y1="21" x2="25" y2="26"/><line x1="44" y1="40" x2="39" y2="40"/><line x1="25" y1="59" x2="25" y2="54"/><line x1="6" y1="40" x2="11" y2="40"/></g>
+        <g stroke="#C9A84C" stroke-width="0.7" stroke-opacity="0.45"><line x1="41.5" y1="26.5" x2="38.7" y2="29.3"/><line x1="41.5" y1="53.5" x2="38.7" y2="50.7"/><line x1="8.5" y1="53.5" x2="11.3" y2="50.7"/><line x1="8.5" y1="26.5" x2="11.3" y2="29.3"/></g>
+        <line x1="25" y1="40" x2="16" y2="28" stroke="url(#goldGradL)" stroke-width="1.8" stroke-linecap="round" filter="url(#glowL)"/>
+        <line x1="25" y1="40" x2="34" y2="25" stroke="#d4b85a" stroke-width="1.2" stroke-linecap="round" filter="url(#glowL)"/>
+        <line x1="25" y1="40" x2="21" y2="54" stroke="#c0392b" stroke-width="0.8" stroke-linecap="round"/>
+        <circle cx="25" cy="40" r="2" fill="url(#goldGradL)" filter="url(#glowL)"/>
+        <circle cx="25" cy="40" r="0.8" fill="#f0e0a0"/>
+        <text x="64" y="37" font-family="Georgia, 'Times New Roman', serif" font-size="26" font-weight="700" letter-spacing="5" fill="url(#goldGradL)" filter="url(#glowL)">WATCH</text>
+        <line x1="64" y1="43" x2="314" y2="43" stroke="#C9A84C" stroke-width="0.4" stroke-opacity="0.5"/>
+        <text x="66" y="62" font-family="Georgia, 'Times New Roman', serif" font-size="26" font-weight="300" letter-spacing="10" fill="#d4c49a">VAULT</text>
+        <circle cx="64" cy="72" r="1" fill="#C9A84C" fill-opacity="0.9"/>
+        <circle cx="314" cy="72" r="1" fill="#C9A84C" fill-opacity="0.9"/>
+        <text x="189" y="75" font-family="Georgia, serif" font-size="6.5" letter-spacing="3.5" text-anchor="middle" fill="#e8c97a" fill-opacity="1">YOUR COLLECTION · CATALOGUED</text>
+      </svg>
+    </div>
 
     <div style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:300;color:var(--text2);margin-bottom:8px;letter-spacing:0.03em">Sign in to access your collection</div>
     <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text3);margin-bottom:32px;line-height:1.6">Your data is stored privately in your<br>Google Drive and synced across all devices.</div>
@@ -1448,8 +1456,35 @@
   <!-- Sidebar -->
   <aside class="sidebar">
     <div class="sidebar-logo">
-      <span class="logo-mark">Horology</span>
-      <span class="logo-sub">Watch Collection</span>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" style="width:100%;max-width:190px;height:auto;display:block">
+        <defs>
+          <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#C9A84C"/>
+            <stop offset="50%" style="stop-color:#E8C96A"/>
+            <stop offset="100%" style="stop-color:#A8832A"/>
+          </linearGradient>
+          <filter id="glow"><feGaussianBlur stdDeviation="1.2" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <rect x="19" y="4" width="12" height="11" rx="2" fill="#1e1a10" stroke="#9a7830" stroke-width="0.8"/>
+        <rect x="19" y="65" width="12" height="11" rx="2" fill="#1e1a10" stroke="#9a7830" stroke-width="0.8"/>
+        <circle cx="25" cy="40" r="26" fill="none" stroke="url(#goldGrad)" stroke-width="1.8" filter="url(#glow)"/>
+        <circle cx="25" cy="40" r="22" fill="none" stroke="#9a7830" stroke-width="0.5" stroke-opacity="0.5"/>
+        <rect x="50" y="37" width="5" height="6" rx="1.5" fill="url(#goldGrad)"/>
+        <circle cx="25" cy="40" r="21" fill="#12100a"/>
+        <g stroke="url(#goldGrad)" stroke-width="1.2" filter="url(#glow)"><line x1="25" y1="21" x2="25" y2="26"/><line x1="44" y1="40" x2="39" y2="40"/><line x1="25" y1="59" x2="25" y2="54"/><line x1="6" y1="40" x2="11" y2="40"/></g>
+        <g stroke="#C9A84C" stroke-width="0.7" stroke-opacity="0.45"><line x1="41.5" y1="26.5" x2="38.7" y2="29.3"/><line x1="41.5" y1="53.5" x2="38.7" y2="50.7"/><line x1="8.5" y1="53.5" x2="11.3" y2="50.7"/><line x1="8.5" y1="26.5" x2="11.3" y2="29.3"/></g>
+        <line x1="25" y1="40" x2="16" y2="28" stroke="url(#goldGrad)" stroke-width="1.8" stroke-linecap="round" filter="url(#glow)"/>
+        <line x1="25" y1="40" x2="34" y2="25" stroke="#d4b85a" stroke-width="1.2" stroke-linecap="round" filter="url(#glow)"/>
+        <line x1="25" y1="40" x2="21" y2="54" stroke="#c0392b" stroke-width="0.8" stroke-linecap="round"/>
+        <circle cx="25" cy="40" r="2" fill="url(#goldGrad)" filter="url(#glow)"/>
+        <circle cx="25" cy="40" r="0.8" fill="#f0e0a0"/>
+        <text x="64" y="37" font-family="Georgia, 'Times New Roman', serif" font-size="26" font-weight="700" letter-spacing="5" fill="url(#goldGrad)" filter="url(#glow)">WATCH</text>
+        <line x1="64" y1="43" x2="314" y2="43" stroke="#C9A84C" stroke-width="0.4" stroke-opacity="0.5"/>
+        <text x="66" y="62" font-family="Georgia, 'Times New Roman', serif" font-size="26" font-weight="300" letter-spacing="10" fill="#d4c49a">VAULT</text>
+        <circle cx="64" cy="72" r="1" fill="#C9A84C" fill-opacity="0.9"/>
+        <circle cx="314" cy="72" r="1" fill="#C9A84C" fill-opacity="0.9"/>
+        <text x="189" y="75" font-family="Georgia, serif" font-size="6.5" letter-spacing="3.5" text-anchor="middle" fill="#e8c97a" fill-opacity="1">YOUR COLLECTION · CATALOGUED</text>
+      </svg>
     </div>
     <nav class="sidebar-nav">
       <div class="nav-section">
