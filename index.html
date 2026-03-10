@@ -2223,20 +2223,37 @@ let driveFileId = null;
 let driveUser = null;
 let driveTokenClient = null;
 
-function driveSignIn() {
+function driveSignIn(silent) {
   if (!driveTokenClient) {
     driveTokenClient = google.accounts.oauth2.initTokenClient({
       client_id: GDRIVE_CLIENT_ID,
       scope: GDRIVE_SCOPES,
+      prompt: silent ? 'none' : 'select_account',
       callback: async (resp) => {
         if (resp.error) {
-          const errEl = document.getElementById('login-error');
-          if (errEl) { errEl.style.display = 'block'; errEl.textContent = 'Sign-in failed — please try again.'; }
-          driveSetStatus('Sign-in failed', false);
+          if (silent) {
+            // Silent refresh failed — show login screen
+            document.getElementById('login-screen').style.display = 'flex';
+            document.getElementById('app-wrapper').style.display = 'none';
+          } else {
+            const errEl = document.getElementById('login-error');
+            if (errEl) { errEl.style.display = 'block'; errEl.textContent = 'Sign-in failed — please try again.'; }
+            driveSetStatus('Sign-in failed', false);
+          }
           return;
         }
         driveAccessToken = resp.access_token;
-        await driveGetUserInfo();
+        // Restore cached user info if available, otherwise fetch
+        const cached = localStorage.getItem('drive-user');
+        if (cached) {
+          driveUser = JSON.parse(cached);
+          document.getElementById('drive-signin-btn').style.display = 'none';
+          document.getElementById('drive-user').style.display = 'block';
+          document.getElementById('drive-name').textContent = driveUser.name || driveUser.email;
+          document.getElementById('drive-avatar').textContent = (driveUser.name || driveUser.email || '?')[0].toUpperCase();
+        } else {
+          await driveGetUserInfo();
+        }
         // Hide login, reveal app
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('app-wrapper').style.display = 'block';
@@ -2244,8 +2261,12 @@ function driveSignIn() {
         await driveLoadOrCreate();
       }
     });
+  } else if (silent) {
+    // Update prompt for silent refresh
+    driveTokenClient.requestAccessToken({ prompt: 'none' });
+    return;
   }
-  driveTokenClient.requestAccessToken();
+  driveTokenClient.requestAccessToken(silent ? { prompt: 'none' } : {});
 }
 
 function driveSignOut() {
@@ -2253,6 +2274,7 @@ function driveSignOut() {
   driveAccessToken = null;
   driveFileId = null;
   driveUser = null;
+  localStorage.removeItem('drive-user');
   document.getElementById('drive-signin-btn').style.display = '';
   document.getElementById('drive-user').style.display = 'none';
   // Return to login screen
@@ -2267,6 +2289,7 @@ async function driveGetUserInfo() {
       headers: { Authorization: 'Bearer ' + driveAccessToken }
     });
     driveUser = await r.json();
+    localStorage.setItem('drive-user', JSON.stringify(driveUser));
     document.getElementById('drive-signin-btn').style.display = 'none';
     document.getElementById('drive-user').style.display = 'block';
     document.getElementById('drive-name').textContent = driveUser.name || driveUser.email;
@@ -2401,6 +2424,25 @@ save = function() {
 renderCollection();
 updateCounts();
 initFunFacts();
+
+// Auto-login: if user was previously signed in, attempt silent token refresh
+window.addEventListener('load', () => {
+  const cached = localStorage.getItem('drive-user');
+  if (cached) {
+    // Show a loading state on the login screen while we silently refresh
+    const btn = document.querySelector('#login-screen button');
+    if (btn) { btn.textContent = 'Signing you in...'; btn.disabled = true; }
+    // Wait for Google GSI to load then attempt silent sign-in
+    const tryAutoLogin = () => {
+      if (typeof google !== 'undefined' && google.accounts) {
+        driveSignIn(true);
+      } else {
+        setTimeout(tryAutoLogin, 200);
+      }
+    };
+    setTimeout(tryAutoLogin, 300);
+  }
+});
 </script>
 </body>
 </html>
