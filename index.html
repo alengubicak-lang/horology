@@ -2257,8 +2257,10 @@ function driveSignIn(silent) {
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('app-wrapper').style.display = 'block';
         if (window._autoLoginFallback) clearTimeout(window._autoLoginFallback);
-        driveSetStatus('Connected · Loading...', true);
-        await driveLoadOrCreate();
+        // Handle any pending action (save/load triggered before token was ready)
+        if (window._pendingAction === 'load') { window._pendingAction = null; await driveLoadOrCreate(); }
+        else if (window._pendingAction === 'save') { window._pendingAction = null; await driveSave(); }
+        else { driveSetStatus('Connected · Loading...', true); await driveLoadOrCreate(); }
       }
     });
   }
@@ -2314,7 +2316,13 @@ async function driveLoadOrCreate() {
 }
 
 async function driveLoad() {
-  if (!driveAccessToken) { driveSignIn(); return; }
+  if (!driveAccessToken) {
+    // Need a fresh token — request one, then load will be called from callback
+    driveSetStatus('Connecting...', true);
+    window._pendingAction = 'load';
+    driveSignIn();
+    return;
+  }
   driveSetStatus('Loading...', true);
   try {
     let fid = driveFileId;
@@ -2347,7 +2355,12 @@ async function driveLoad() {
 }
 
 async function driveSave() {
-  if (!driveAccessToken) { driveSignIn(); return; }
+  if (!driveAccessToken) {
+    driveSetStatus('Connecting...', true);
+    window._pendingAction = 'save';
+    driveSignIn();
+    return;
+  }
   driveSetStatus('Saving...', true);
   const payload = JSON.stringify({ watches, services, savedAt: new Date().toISOString() });
   try {
@@ -2421,12 +2434,11 @@ renderCollection();
 updateCounts();
 initFunFacts();
 
-// Auto-login: if user signed in before, show app immediately from local data
-// then reconnect to Drive silently in the background
+// If user signed in before, show app immediately from local data — no login required
 window.addEventListener('load', () => {
   const cached = localStorage.getItem('drive-user');
   if (cached) {
-    // Show app straight away — no login screen
+    // Show app instantly using local data
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app-wrapper').style.display = 'block';
 
@@ -2436,33 +2448,7 @@ window.addEventListener('load', () => {
     document.getElementById('drive-user').style.display = 'block';
     document.getElementById('drive-name').textContent = driveUser.name || driveUser.email;
     document.getElementById('drive-avatar').textContent = (driveUser.name || driveUser.email || '?')[0].toUpperCase();
-    driveSetStatus('Reconnecting...', true);
-
-    // Try to get a fresh token silently in the background
-    const tryReconnect = () => {
-      if (typeof google !== 'undefined' && google.accounts) {
-        if (!driveTokenClient) {
-          driveTokenClient = google.accounts.oauth2.initTokenClient({
-            client_id: GDRIVE_CLIENT_ID,
-            scope: GDRIVE_SCOPES,
-            callback: async (resp) => {
-              if (resp.error) {
-                // Token failed — show a manual sync button, but keep app open
-                driveSetStatus('Tap Save/Load to sync', false);
-                return;
-              }
-              driveAccessToken = resp.access_token;
-              driveSetStatus('Connected · Loading...', true);
-              await driveLoadOrCreate();
-            }
-          });
-        }
-        driveTokenClient.requestAccessToken({ prompt: '' });
-      } else {
-        setTimeout(tryReconnect, 200);
-      }
-    };
-    setTimeout(tryReconnect, 500);
+    driveSetStatus('Press Load to sync', true);
   }
 });
 
