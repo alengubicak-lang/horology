@@ -2239,35 +2239,42 @@ function field(label, val) {
 
 // ===== GALLERY =====
 function renderGallery() {
-  const withImgs = watches.filter(w => w.images && w.images.length);
   const grid = document.getElementById('gallery-grid');
   const empty = document.getElementById('empty-gallery');
-  document.getElementById('gallery-count').textContent = withImgs.length;
+  document.getElementById('gallery-count').textContent = watches.length;
 
-  if (!withImgs.length) {
+  if (!watches.length) {
     grid.innerHTML = '';
     empty.style.display = 'block';
     return;
   }
 
   empty.style.display = 'none';
-  grid.innerHTML = withImgs.map(w => `
+  grid.innerHTML = watches.map(w => {
+    const hasImg = w.images && w.images.length;
+    const imgOrPlaceholder = hasImg
+      ? `<img src="${w.images[0]}" alt="${w.name}" loading="lazy">`
+      : `<div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:var(--surface2)">
+           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="width:32px;height:32px;color:var(--text3);opacity:0.3"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+           <span style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.15em;color:var(--text3);opacity:0.5">NO PHOTO</span>
+         </div>`;
+    return `
     <div class="gallery-item" onclick="openDetail('${w.id}')">
-      <img src="${w.images[0]}" alt="${w.name}" loading="lazy">
+      ${imgOrPlaceholder}
       <div class="gallery-item-overlay">
         <div class="gallery-item-name">${w.name}</div>
         <div class="gallery-item-brand">${w.brand}</div>
       </div>
       <div class="gallery-item-actions">
-        <div class="icon-btn" onclick="event.stopPropagation();openLightbox('${w.images[0].replace(/'/g,"\\'")}')">
+        ${hasImg ? `<div class="icon-btn" onclick="event.stopPropagation();openLightbox('${w.images[0].replace(/'/g,"\\'")}')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-        </div>
+        </div>` : ''}
         <div class="icon-btn del" onclick="event.stopPropagation();deleteWatch('${w.id}')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
         </div>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 
 // ===== LIGHTBOX =====
@@ -2646,13 +2653,17 @@ async function driveLoad() {
       `https://www.googleapis.com/drive/v3/files/${fid}?alt=media`,
       { headers: { Authorization: 'Bearer ' + driveAccessToken } }
     );
-    const saved = await r2.json();
+    if (!r2.ok) { driveSetStatus('Load failed (' + r2.status + ')', false); return; }
+    const text = await r2.text();
+    let saved;
+    try { saved = JSON.parse(text); } catch(e) { driveSetStatus('Load failed (bad data)', false); return; }
     if (saved.watches) watches = saved.watches;
     if (saved.services) services = saved.services;
     save(); // mirror to localStorage
     renderCollection();
     renderGallery();
     updateCounts();
+    updateStats();
     const t = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
     driveSetStatus('Synced · ' + t, true);
   } catch(e) {
