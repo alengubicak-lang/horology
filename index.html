@@ -1171,6 +1171,69 @@
   .tab-btn:hover { color: var(--text2); }
   .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
 
+  /* ===== SETTINGS ===== */
+  .settings-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 20px;
+    max-width: 680px;
+  }
+  .settings-section-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 12px;
+    position: relative;
+  }
+  .settings-section-header::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0.25;
+  }
+  .section-icon {
+    width: 32px; height: 32px;
+    background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.2);
+    border-radius: var(--radius);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    color: var(--gold);
+  }
+  .section-title { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 300; color: var(--text); }
+  .section-subtitle { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text3); letter-spacing: 0.1em; margin-top: 2px; }
+  .settings-body { padding: 20px; }
+
+  .add-row { display: flex; gap: 10px; margin-bottom: 20px; }
+  .brand-input {
+    flex: 1; background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 10px 14px;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text);
+    outline: none; transition: border-color 0.15s;
+  }
+  .brand-input:focus { border-color: var(--gold); }
+  .brand-input::placeholder { color: var(--text3); }
+
+  .list-label {
+    font-family: 'DM Mono', monospace; font-size: 8px;
+    letter-spacing: 0.3em; color: var(--text3); text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .list-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .brand-list { display: flex; flex-direction: column; gap: 2px; max-height: 400px; overflow-y: auto; }
+  .brand-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 9px 12px; background: var(--surface2); border-radius: var(--radius);
+    border: 1px solid transparent; transition: border-color 0.15s;
+  }
+  .brand-item:hover { border-color: var(--border); }
+  .brand-item-left { display: flex; align-items: center; gap: 10px; }
+  .brand-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--border2); flex-shrink: 0; }
+  .brand-item-name { font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text2); }
+  .brand-item-actions { opacity: 0; transition: opacity 0.15s; }
+  .brand-item:hover .brand-item-actions { opacity: 1; }
+
   /* ===== RESPONSIVE / MOBILE ===== */
   @media (max-width: 900px) {
     .sidebar { width: 60px; }
@@ -1493,7 +1556,12 @@
           <span class="nav-badge" id="service-count">0</span>
         </button>
       </div>
-    </nav>
+      <div class="nav-section">
+        <button class="nav-btn" onclick="showPage('settings', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          <span>Settings</span>
+        </button>
+      </div>
     <div class="sidebar-footer">
       <div class="collection-value">Total Value</div>
       <div class="collection-total" id="sidebar-total">—</div>
@@ -1702,42 +1770,6 @@
           <label class="form-label">Brand *</label>
           <select class="form-select" id="w-brand">
             <option value="">Select brand...</option>
-            <option>A. Lange & Söhne</option>
-            <option>Audemars Piguet</option>
-            <option>Breguet</option>
-            <option>Cartier</option>
-            <option>Casio</option>
-            <option>Citizen</option>
-            <option>Darwil</option>
-            <option>Doxa</option>
-            <option>Enicar</option>
-            <option>Grand Seiko</option>
-            <option>Harel</option>
-            <option>IWC</option>
-            <option>Jaeger-LeCoultre</option>
-            <option>King Seiko</option>
-            <option>Longines</option>
-            <option>Marvin</option>
-            <option>Nomos</option>
-            <option>Omega</option>
-            <option>Omikron</option>
-            <option>Orient</option>
-            <option>Orion</option>
-            <option>Panerai</option>
-            <option>Patek Philippe</option>
-            <option>Poljot</option>
-            <option>Raketa</option>
-            <option>Roamer</option>
-            <option>Rolex</option>
-            <option>Seiko</option>
-            <option>Slava</option>
-            <option>Strela</option>
-            <option>Tissot</option>
-            <option>Tudor</option>
-            <option>Vacheron Constantin</option>
-            <option>Vostok</option>
-            <option>Zenith</option>
-            <option>Other</option>
           </select>
         </div>
         <div class="form-group">
@@ -1920,6 +1952,40 @@
   </button>
 </div>
 
+    <!-- ===== SETTINGS PAGE ===== -->
+    <div id="page-settings" class="page">
+      <div class="topbar">
+        <h1 class="page-title">App <span>Settings</span></h1>
+      </div>
+      <div class="content">
+
+        <!-- Brand Manager -->
+        <div class="settings-section">
+          <div class="settings-section-header">
+            <div class="section-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15" height="15"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <div>
+              <div class="section-title">Brand Manager</div>
+              <div class="section-subtitle">Add or remove brands from the watch form dropdown</div>
+            </div>
+          </div>
+          <div class="settings-body">
+            <div class="add-row">
+              <input class="brand-input" id="new-brand-input" type="text" placeholder="Enter brand name…">
+              <button class="btn btn-primary" onclick="addCustomBrand()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span class="btn-label">Add Brand</span>
+              </button>
+            </div>
+            <div class="list-label">All Brands</div>
+            <div id="brand-manager-list" class="brand-list"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
 <!-- ===== MOBILE BOTTOM NAV ===== -->
 <nav class="mobile-nav">
   <div class="mobile-nav-inner">
@@ -1970,6 +2036,7 @@ function showPage(page, btn) {
   if (page === 'gallery') renderGallery();
   if (page === 'service') renderServiceLog();
   if (page === 'collection') renderCollection();
+  if (page === 'settings') renderBrandManagerList();
 }
 
 // ===== MODALS =====
@@ -1978,13 +2045,14 @@ function openAddModal(id) {
   pendingImages = [];
   document.getElementById('img-previews').innerHTML = '';
   document.getElementById('modal-title').textContent = id ? 'Edit Watch' : 'Add Watch';
+  populateBrandDropdown();
   const fields = ['brand','name','ref','serial','year','movement','case','size','condition','bp','purchase','value','date','dial','notes'];
   fields.forEach(f => { const el = document.getElementById('w-'+f); if(el) el.value = ''; });
 
   if (id) {
     const w = watches.find(x => x.id === id);
     if (w) {
-      document.getElementById('w-brand').value = w.brand || '';
+      populateBrandDropdown(w.brand || '');
       document.getElementById('w-name').value = w.name || '';
       document.getElementById('w-ref').value = w.ref || '';
       document.getElementById('w-serial').value = w.serial || '';
@@ -2659,11 +2727,14 @@ async function driveLoad() {
     try { saved = JSON.parse(text); } catch(e) { driveSetStatus('Load failed (bad data)', false); return; }
     if (saved.watches) watches = saved.watches;
     if (saved.services) services = saved.services;
+    if (saved.customBrands) localStorage.setItem('custom-brands', JSON.stringify(saved.customBrands));
     save(); // mirror to localStorage
     renderCollection();
     renderGallery();
     updateCounts();
     updateStats();
+    populateBrandDropdown();
+    renderBrandManagerList();
     const t = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
     driveSetStatus('Synced · ' + t, true);
   } catch(e) {
@@ -2679,7 +2750,7 @@ async function driveSave() {
     return;
   }
   driveSetStatus('Saving...', true);
-  const payload = JSON.stringify({ watches, services, savedAt: new Date().toISOString() });
+  const payload = JSON.stringify({ watches, services, customBrands: JSON.parse(localStorage.getItem('custom-brands') || '[]'), savedAt: new Date().toISOString() });
   try {
     if (driveFileId) {
       // Update existing file
@@ -2770,7 +2841,85 @@ function openMobileSync() {
   else driveSave();
 }
 
+// ===== BRAND MANAGER =====
+const BUILTIN_BRANDS = [
+  'A. Lange & Söhne','Audemars Piguet','Breguet','Cartier','Casio','Citizen',
+  'Darwil','Doxa','Enicar','Grand Seiko','Harel','IWC','Jaeger-LeCoultre',
+  'King Seiko','Longines','Marvin','Nomos','Omega','Omikron','Orient','Orion',
+  'Panerai','Patek Philippe','Poljot','Raketa','Roamer','Rolex','Seiko','Slava',
+  'Strela','Tissot','Tudor','Vacheron Constantin','Vostok','Zenith','Other'
+];
+
+function getAllBrands() {
+  const custom = JSON.parse(localStorage.getItem('custom-brands') || '[]');
+  return [...new Set([...BUILTIN_BRANDS, ...custom])].sort((a, b) => {
+    if (a === 'Other') return 1;
+    if (b === 'Other') return -1;
+    return a.localeCompare(b);
+  });
+}
+
+function populateBrandDropdown(selectedValue = '') {
+  const sel = document.getElementById('w-brand');
+  if (!sel) return;
+  const brands = getAllBrands();
+  sel.innerHTML = `<option value="">Select brand...</option>` +
+    brands.map(b => `<option${b === selectedValue ? ' selected' : ''}>${b}</option>`).join('');
+}
+
+function renderBrandManagerList() {
+  const list = document.getElementById('brand-manager-list');
+  if (!list) return;
+  const custom = JSON.parse(localStorage.getItem('custom-brands') || '[]');
+  const all = getAllBrands();
+  list.innerHTML = all.map(b => `
+    <div class="brand-item">
+      <div class="brand-item-left">
+        <div class="brand-dot"></div>
+        <div class="brand-item-name">${b}</div>
+      </div>
+      ${custom.includes(b) ? `
+      <div class="brand-item-actions">
+        <button class="icon-btn del" onclick="deleteCustomBrand('${b.replace(/'/g,"\\'")}')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="11" height="11"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
+        </button>
+      </div>` : ''}
+    </div>
+  `).join('');
+}
+
+function addCustomBrand() {
+  const input = document.getElementById('new-brand-input');
+  const name = input.value.trim();
+  if (!name) return;
+  const custom = JSON.parse(localStorage.getItem('custom-brands') || '[]');
+  if (getAllBrands().map(b => b.toLowerCase()).includes(name.toLowerCase())) {
+    input.style.borderColor = 'var(--red)';
+    setTimeout(() => input.style.borderColor = '', 1500);
+    return;
+  }
+  custom.push(name);
+  localStorage.setItem('custom-brands', JSON.stringify(custom));
+  input.value = '';
+  renderBrandManagerList();
+  populateBrandDropdown();
+}
+
+function deleteCustomBrand(name) {
+  const custom = JSON.parse(localStorage.getItem('custom-brands') || '[]');
+  localStorage.setItem('custom-brands', JSON.stringify(custom.filter(b => b !== name)));
+  renderBrandManagerList();
+  populateBrandDropdown();
+}
+
+// Allow Enter key to add brand
+document.addEventListener('DOMContentLoaded', () => {
+  const input = document.getElementById('new-brand-input');
+  if (input) input.addEventListener('keydown', e => { if (e.key === 'Enter') addCustomBrand(); });
+});
+
 // ===== INIT =====
+populateBrandDropdown();
 renderCollection();
 updateCounts();
 initFunFacts();
