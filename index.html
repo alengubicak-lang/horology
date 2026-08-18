@@ -1562,6 +1562,7 @@
           <span>Settings</span>
         </button>
       </div>
+    </nav>
     <div class="sidebar-footer">
       <div class="collection-value">Total Value</div>
       <div class="collection-total" id="sidebar-total">—</div>
@@ -2036,7 +2037,7 @@ function showPage(page, btn) {
   if (page === 'gallery') renderGallery();
   if (page === 'service') renderServiceLog();
   if (page === 'collection') renderCollection();
-  if (page === 'settings') renderBrandManagerList();
+  if (page === 'settings') setTimeout(renderBrandManagerList, 0);
 }
 
 // ===== MODALS =====
@@ -2872,6 +2873,7 @@ function renderBrandManagerList() {
   if (!list) return;
   const custom = JSON.parse(localStorage.getItem('custom-brands') || '[]');
   const all = getAllBrands();
+  if (!all.length) { list.innerHTML = '<div style="font-family:\'DM Mono\',monospace;font-size:10px;color:var(--text3);padding:12px 0">No brands found</div>'; return; }
   list.innerHTML = all.map(b => `
     <div class="brand-item">
       <div class="brand-item-left">
