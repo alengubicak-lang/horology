@@ -1752,6 +1752,37 @@
       </div>
     </div>
 
+    <!-- ===== SETTINGS PAGE ===== -->
+    <div id="page-settings" class="page">
+      <div class="topbar">
+        <h1 class="page-title">App <span>Settings</span></h1>
+      </div>
+      <div class="content">
+        <div class="settings-section">
+          <div class="settings-section-header">
+            <div class="section-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15" height="15"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <div>
+              <div class="section-title">Brand Manager</div>
+              <div class="section-subtitle">Add or remove brands from the watch form dropdown</div>
+            </div>
+          </div>
+          <div class="settings-body">
+            <div class="add-row">
+              <input class="brand-input" id="new-brand-input" type="text" placeholder="Enter brand name…">
+              <button class="btn btn-primary" onclick="addCustomBrand()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span class="btn-label">Add Brand</span>
+              </button>
+            </div>
+            <div class="list-label">All Brands</div>
+            <div id="brand-manager-list" class="brand-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </main>
 </div>
 
@@ -1952,40 +1983,6 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
   </button>
 </div>
-
-    <!-- ===== SETTINGS PAGE ===== -->
-    <div id="page-settings" class="page">
-      <div class="topbar">
-        <h1 class="page-title">App <span>Settings</span></h1>
-      </div>
-      <div class="content">
-
-        <!-- Brand Manager -->
-        <div class="settings-section">
-          <div class="settings-section-header">
-            <div class="section-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15" height="15"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-            </div>
-            <div>
-              <div class="section-title">Brand Manager</div>
-              <div class="section-subtitle">Add or remove brands from the watch form dropdown</div>
-            </div>
-          </div>
-          <div class="settings-body">
-            <div class="add-row">
-              <input class="brand-input" id="new-brand-input" type="text" placeholder="Enter brand name…">
-              <button class="btn btn-primary" onclick="addCustomBrand()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                <span class="btn-label">Add Brand</span>
-              </button>
-            </div>
-            <div class="list-label">All Brands</div>
-            <div id="brand-manager-list" class="brand-list"></div>
-          </div>
-        </div>
-
-      </div>
-    </div>
 
 <!-- ===== MOBILE BOTTOM NAV ===== -->
 <nav class="mobile-nav">
