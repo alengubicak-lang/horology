@@ -1623,11 +1623,11 @@
           </div>
           <div class="stat-card">
             <div class="stat-label">Collection Value</div>
-            <div class="stat-value gold" id="stat-value">$0</div>
+            <div class="stat-value gold" id="stat-value">€0</div>
           </div>
           <div class="stat-card">
             <div class="stat-label">Avg. Value</div>
-            <div class="stat-value" id="stat-avg">$0</div>
+            <div class="stat-value" id="stat-avg">€0</div>
           </div>
           <div class="stat-card">
             <div class="stat-label">Most Valuable</div>
@@ -1726,7 +1726,7 @@
           </div>
           <div class="stat-card">
             <div class="stat-label">Total Service Cost</div>
-            <div class="stat-value gold" id="svc-cost">$0</div>
+            <div class="stat-value gold" id="svc-cost">€0</div>
           </div>
           <div class="stat-card">
             <div class="stat-label">Last Service</div>
@@ -1875,11 +1875,11 @@
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label">Purchase Price ($)</label>
+          <label class="form-label">Purchase Price (€)</label>
           <input class="form-input" type="number" id="w-purchase" placeholder="0">
         </div>
         <div class="form-group">
-          <label class="form-label">Current Value ($)</label>
+          <label class="form-label">Current Value (€)</label>
           <input class="form-input" type="number" id="w-value" placeholder="0">
         </div>
         <div class="form-group">
@@ -1958,7 +1958,7 @@
             <input class="form-input" type="date" id="svc-date">
           </div>
           <div class="form-group">
-            <label class="form-label">Cost ($)</label>
+            <label class="form-label">Cost (€)</label>
             <input class="form-input" type="number" id="svc-cost-input" placeholder="0">
           </div>
         </div>
@@ -2018,7 +2018,7 @@ let editingId = null;
 
 // ===== UTILS =====
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
-function fmt(n) { if (!n) return '—'; return '$' + Number(n).toLocaleString(); }
+function fmt(n) { if (!n) return '—'; return '€' + Number(n).toLocaleString(); }
 function save() {
   localStorage.setItem('watches', JSON.stringify(watches));
   localStorage.setItem('services', JSON.stringify(services));
